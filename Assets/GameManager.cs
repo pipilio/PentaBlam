@@ -9,21 +9,19 @@ public class GameManager : MonoBehaviour {
 	public Text lifeLabel;
 	public Text streakLabel;
 
-	private string notePressed;
-
 	void Awake() {
 		if (instance != null) {
 			GameObject.Destroy (instance);
 		} else {
 			instance = this;
 		}
-		
+
 		DontDestroyOnLoad (this);
 	}
 
 	System.Random rand = new System.Random();
 	private int _lives;
-	public int lives 
+	public int lives
 	{
 		set
 		{
@@ -50,7 +48,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private const float ttl = 3.0f;
+	private const float ttl = 8.0f;
 	private string[] noteNames = new string[] {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C1"};
 	private string currentNoteName;
 
@@ -59,41 +57,48 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		lives = 10;
 		streak = 0;
-		StartCoroutine (MainCycle());
+        currentNoteName = "";
 	}
-	
+
 
 	public void OnNotePressed(string noteName)
 	{
-		if (notePressed.Equals("")) {
-			notePressed = noteName;
-			if (noteName != currentNoteName) {
-				Debug.Log ("you fucker!");
-				lives--;
-				streak = 0;
-			} else {
-				Debug.Log ("good");
-				streak++;
-			}
+		if (noteName != currentNoteName) {
+            NotePositioner.instance.GetNota().GetComponent<NoteController>().ageNote(1f);
+            streak = 0;
+		} else {
+            Destroy(NotePositioner.instance.GetNota().gameObject);
+            currentNoteName = "";
+			streak++;
 		}
+
 	}
+
+    public void OnNoteExpired()
+    {
+        lives--;
+        streak = 0;
+        currentNoteName = "";
+    }
+
+    public void Update()
+    {
+        StartCoroutine(MainCycle());
+    }
 
 	public IEnumerator MainCycle()
 	{
-		while (lives > 0) {
-			notePressed = "";
-			int nextNoteIndex = rand.Next () % noteNames.Length;
-			string nextNote = noteNames [nextNoteIndex];
-			currentNoteName = nextNote;
-			Debug.Log ("selected note is " + nextNote);
-			NotePositioner.instance.ShowNote (nextNote);
-			yield return new WaitForSeconds(ttl);
-			if (!notePressed.Equals (nextNote)) {
-				lives--;
-				streak = 0;
-			}
-		}
-		yield break;
+        // cuando el juego no ha elegido una nota
+        if (currentNoteName.Equals(""))
+        {
+            int nextNoteIndex = rand.Next() % noteNames.Length;
+            string nextNote = noteNames[nextNoteIndex];
+            currentNoteName = nextNote;
+            Debug.Log("selected note is " + nextNote);
+            NotePositioner.instance.ShowNote(nextNote, ttl);
+        }
+
+        yield return null;
 	}
-	
+
 }

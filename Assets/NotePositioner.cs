@@ -7,13 +7,13 @@ public class NotePositioner : MonoBehaviour {
 	public static NotePositioner instance;
 
 	void Awake() {
-		
+
 		if (instance != null) {
 			GameObject.Destroy (instance);
 		} else {
 			instance = this;
 		}
-		
+
 		DontDestroyOnLoad (this);
 	}
 
@@ -21,77 +21,91 @@ public class NotePositioner : MonoBehaviour {
 	public GameObject[] spaces;
 	public GameObject[] lines;
 
+    private GameObject nota;
+
+    public GameObject GetNota()
+    {
+        return nota;
+    }
+
 	public const int noteHeight = 70;
 
-	public void ShowNote(string noteName)
+	public void ShowNote(string noteName, float ttl)
 	{
-		//note.SetActive (true);
-		switch (noteName) {
+        //note.SetActive (true);
+        nota = Object.Instantiate<GameObject>(note);
+        nota.GetComponent<NoteController>().SetTtl(ttl);
+
+        switch (noteName) {
 			case "C":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(lines[0].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(lines[0].transform, false);
 				break;
 			case "C#":
-				note.GetComponent<NoteController>().MakeSharp();
-				note.transform.SetParent(lines[0].transform, false);
+				nota.GetComponent<NoteController>().MakeSharp();
+				nota.transform.SetParent(lines[0].transform, false);
 				break;
 			case "D":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(spaces[0].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(spaces[0].transform, false);
 				break;
 			case "D#":
-				note.GetComponent<NoteController>().MakeSharp();
-				note.transform.SetParent(spaces[0].transform, false);
+				nota.GetComponent<NoteController>().MakeSharp();
+				nota.transform.SetParent(spaces[0].transform, false);
 				break;
 			case "E":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(lines[1].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(lines[1].transform, false);
 				break;
 			case "F":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(spaces[1].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(spaces[1].transform, false);
 				break;
 			case "F#":
-				note.GetComponent<NoteController>().MakeSharp();
-				note.transform.SetParent(spaces[1].transform, false);
+				nota.GetComponent<NoteController>().MakeSharp();
+				nota.transform.SetParent(spaces[1].transform, false);
 				break;
 			case "G":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(lines[2].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(lines[2].transform, false);
 				break;
 			case "G#":
-				note.GetComponent<NoteController>().MakeSharp();
-				note.transform.SetParent(lines[2].transform, false);
+				nota.GetComponent<NoteController>().MakeSharp();
+				nota.transform.SetParent(lines[2].transform, false);
 				break;
 			case "A":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(spaces[2].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(spaces[2].transform, false);
 				break;
 			case "A#":
-				note.GetComponent<NoteController>().MakeSharp();
-				note.transform.SetParent(spaces[2].transform, false);
+				nota.GetComponent<NoteController>().MakeSharp();
+				nota.transform.SetParent(spaces[2].transform, false);
 				break;
 			case "B":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(lines[3].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(lines[3].transform, false);
 				break;
 			case "C1":
-				note.GetComponent<NoteController>().MakeNatural();
-				note.transform.SetParent(spaces[3].transform, false);
+				nota.GetComponent<NoteController>().MakeNatural();
+				nota.transform.SetParent(spaces[3].transform, false);
 				break;
 			default:
 				break;
 				//note.SetActive(false);
 		}
-	}
+        nota.GetComponent<NoteController>().Configure();
+        nota.GetComponent<NoteController>().movable = true;
+
+
+    }
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 }
