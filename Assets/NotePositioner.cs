@@ -18,6 +18,7 @@ public class NotePositioner : MonoBehaviour {
 	}
 
 	public GameObject note;
+    public GameObject mainPanel;
 	public GameObject[] spaces;
 	public GameObject[] lines;
 
@@ -32,7 +33,6 @@ public class NotePositioner : MonoBehaviour {
 
 	public void ShowNote(string noteName, float ttl)
 	{
-        //note.SetActive (true);
         nota = Object.Instantiate<GameObject>(note);
         nota.GetComponent<NoteController>().SetTtl(ttl);
 
